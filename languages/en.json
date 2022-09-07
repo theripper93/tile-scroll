@@ -3,8 +3,12 @@
         "flags": {
             "header": "Tile Scroll",
             "enableScroll": "Enable Scroll",
-            "scrollSpeed": "Scroll Speed",
-            "scrollDirection": "Scroll Direction"
+            "scrollSpeed": "Speed",
+            "scrollDirection": "Scroll Direction",
+            "enableRotate": "Enable Rotation",
+            "repeat": "Repeat",
+            "pivotx": "Rotation Pivot X",
+            "pivoty": "Rotation Pivot Y"
         }
     }
 }
