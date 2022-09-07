@@ -62,7 +62,7 @@ class TileScrollShader extends BaseSamplerShader {
     this.uniforms.tilescroll_direction = Math.toRadians(this.tile.document.flags["tile-scroll"]?.scrollDirection ?? 0);
     this.uniforms.tilescroll_scroll = this.tile.document.flags["tile-scroll"]?.enableScroll ?? false;
     this.uniforms.tilescroll_rotate = this.tile.document.flags["tile-scroll"]?.enableRotate ?? false;
-    this.uniforms.tilescroll_repeat = this.tile.document.flags["tile-scroll"]?.repeat ?? 1;
+    this.uniforms.tilescroll_repeat = this.tile.document.flags["tile-scroll"]?.repeat || 1;
     this.uniforms.tilescroll_pivot = [this.tile.document.flags["tile-scroll"]?.pivotx ?? 0.5, this.tile.document.flags["tile-scroll"]?.pivoty ?? 0.5];
     this.uniforms.tilescroll_pivot[0] += 0.00000001;
     this.uniforms.tilescroll_pivot[1] += 0.00000001;
@@ -73,7 +73,7 @@ class TileScrollShader extends BaseSamplerShader {
 Hooks.on("drawTile", (tile, layer, context) => {
   if(tile.document.flags["tile-scroll"]?.enableScroll || tile.document.flags["tile-scroll"]?.enableRotate) {
     tile.mesh.setShaderClass(TileScrollShader);
-    tile.mesh.texture.baseTexture.wrapMode = PIXI.WRAP_MODES.REPEAT
+    tile.mesh.texture.baseTexture.wrapMode = tile.document.flags["tile-scroll"]?.repeat ? PIXI.WRAP_MODES.REPEAT : PIXI.WRAP_MODES.CLAMP;
     tile.mesh.shader.tile = tile;
   }else{
     tile.mesh.setShaderClass(BaseSamplerShader);
@@ -84,7 +84,7 @@ Hooks.on("updateTile", (tile, updates) => {
   if(!tile.object) return;
   if(updates.flags?.["tile-scroll"] !== undefined) {
     tile.object.mesh.setShaderClass(tile.flags["tile-scroll"].enableScroll || tile.flags["tile-scroll"].enableRotate ? TileScrollShader : BaseSamplerShader);
-    tile.object.mesh.texture.baseTexture.wrapMode = PIXI.WRAP_MODES.REPEAT
+    tile.object.mesh.texture.baseTexture.wrapMode = tile.document.flags["tile-scroll"]?.repeat ? PIXI.WRAP_MODES.REPEAT : PIXI.WRAP_MODES.CLAMP;
     tile.object.mesh.texture.baseTexture.update()
     tile.object.mesh.shader.tile = tile.object;
   }
