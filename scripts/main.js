@@ -54,6 +54,7 @@ Hooks.on("updateTile", (tile, updates) => {
   if(updates.flags?.["tile-scroll"]?.enableScroll !== undefined) {
     tile.object.mesh.setShaderClass(updates.flags["tile-scroll"].enableScroll ? TileScrollShader : BaseSamplerShader);
     tile.object.mesh.texture.baseTexture.wrapMode = PIXI.WRAP_MODES.REPEAT
+    tile.object.mesh.texture.baseTexture.update()
     tile.object.mesh.shader.tile = tile.object;
   }
 });
