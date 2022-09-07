@@ -71,20 +71,19 @@ class TileScrollShader extends BaseSamplerShader {
 }
 
 Hooks.on("drawTile", (tile, layer, context) => {
-  if(tile.document.flags["tile-scroll"]?.enableScroll || tile.document.flags["tile-scroll"]?.enableRotate) {
+  if((tile.document.flags["tile-scroll"]?.enableScroll || tile.document.flags["tile-scroll"]?.enableRotate) && tile.document.occlusion.mode <= 1) {
     tile.mesh.setShaderClass(TileScrollShader);
     tile.mesh.texture.baseTexture.wrapMode = tile.document.flags["tile-scroll"]?.repeat ? PIXI.WRAP_MODES.REPEAT : PIXI.WRAP_MODES.CLAMP;
+    tile.mesh.texture.baseTexture.update()
     tile.mesh.shader.tile = tile;
-  }else{
-    tile.mesh.setShaderClass(BaseSamplerShader);
   }
 });
 
 Hooks.on("updateTile", (tile, updates) => {
   if(!tile.object) return;
-  if(updates.flags?.["tile-scroll"] !== undefined) {
+  if((updates?.flags?.["tile-scroll"] !== undefined || updates?.occlusion) && tile.occlusion.mode <= 1) {
     tile.object.mesh.setShaderClass(tile.flags["tile-scroll"].enableScroll || tile.flags["tile-scroll"].enableRotate ? TileScrollShader : BaseSamplerShader);
-    tile.object.mesh.texture.baseTexture.wrapMode = tile.document.flags["tile-scroll"]?.repeat ? PIXI.WRAP_MODES.REPEAT : PIXI.WRAP_MODES.CLAMP;
+    tile.object.mesh.texture.baseTexture.wrapMode = tile.flags["tile-scroll"]?.repeat ? PIXI.WRAP_MODES.REPEAT : PIXI.WRAP_MODES.CLAMP;
     tile.object.mesh.texture.baseTexture.update()
     tile.object.mesh.shader.tile = tile.object;
   }
