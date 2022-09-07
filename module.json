@@ -1,6 +1,6 @@
 {
     "title": "Tile Scroll",
-    "description": "desc",
+    "description": "Scroll, rotate, and repeat tiles over time.",
     "id": "tile-scroll",
     "version": "1.0",
     "authors": [
