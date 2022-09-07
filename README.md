@@ -5,5 +5,6 @@ Parallaxia until paralaxia is updated for v10
 
 Set stuff here
 
-![image](https://user-images.githubusercontent.com/1346839/188884049-ebb7db0b-710f-44be-a6b9-c2d9e994b648.png)
+![image](https://user-images.githubusercontent.com/1346839/188889316-fbaffdeb-8352-483a-82de-658699d5ca6b.png)
+
 
