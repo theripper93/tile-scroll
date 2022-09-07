@@ -19,10 +19,11 @@ class TileScrollShader extends BaseSamplerShader {
     uniform bool tilescroll_rotate;
     uniform float tilescroll_repeat;
     uniform vec2 tilescroll_pivot;
+    uniform vec2 tilescroll_offset;
     varying vec2 vUvs;
   
     void main() {
-      vUvs = aTextureCoord * tilescroll_repeat;
+      vUvs = aTextureCoord * tilescroll_repeat + tilescroll_offset;
       if(tilescroll_scroll) {
         vUvs += vec2(tilescroll_time * tilescroll_speed * cos(tilescroll_direction), tilescroll_time * tilescroll_speed * sin(tilescroll_direction));
       }
@@ -51,6 +52,7 @@ class TileScrollShader extends BaseSamplerShader {
     tilescroll_rotate: false,
     tilescroll_repeat: 1,
     tilescroll_pivot: [0.5, 0.5],
+    tilescroll_offset: [0, 0],
   };
 
   _preRender(mesh) {
@@ -62,6 +64,9 @@ class TileScrollShader extends BaseSamplerShader {
     this.uniforms.tilescroll_rotate = this.tile.document.flags["tile-scroll"]?.enableRotate ?? false;
     this.uniforms.tilescroll_repeat = this.tile.document.flags["tile-scroll"]?.repeat ?? 1;
     this.uniforms.tilescroll_pivot = [this.tile.document.flags["tile-scroll"]?.pivotx ?? 0.5, this.tile.document.flags["tile-scroll"]?.pivoty ?? 0.5];
+    this.uniforms.tilescroll_pivot[0] += 0.00000001;
+    this.uniforms.tilescroll_pivot[1] += 0.00000001;
+    this.uniforms.tilescroll_offset = [this.tile.document.flags["tile-scroll"]?.offsetx ?? 0, this.tile.document.flags["tile-scroll"]?.offsety ?? 0];
   }
 }
 
