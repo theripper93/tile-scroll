@@ -41,9 +41,19 @@ class TileScrollShader extends BaseSamplerShader {
 
 Hooks.on("drawTile", (tile, layer, context) => {
   if(tile.document.flags["tile-scroll"]?.enableScroll) {
-    tile.mesh.setShaderClass(BaseSamplerShader);
     tile.mesh.setShaderClass(TileScrollShader);
     tile.mesh.texture.baseTexture.wrapMode = PIXI.WRAP_MODES.REPEAT
     tile.mesh.shader.tile = tile;
+  }else{
+    tile.mesh.setShaderClass(BaseSamplerShader);
+  }
+});
+
+Hooks.on("updateTile", (tile, updates) => {
+  if(!tile.object) return;
+  if(updates.flags?.["tile-scroll"]?.enableScroll !== undefined) {
+    tile.object.mesh.setShaderClass(updates.flags["tile-scroll"].enableScroll ? TileScrollShader : BaseSamplerShader);
+    tile.object.mesh.texture.baseTexture.wrapMode = PIXI.WRAP_MODES.REPEAT
+    tile.object.mesh.shader.tile = tile.object;
   }
 });
