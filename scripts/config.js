@@ -62,4 +62,5 @@ Hooks.on("renderTileConfig", (app, html, data) => {
     <hr>
     `;
     html.find('input[name="video.volume"]').closest(".form-group").after(injectHtml);
+    app.setPosition({ height: "auto" });
 });
