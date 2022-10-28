@@ -57,7 +57,7 @@ class TileScrollShader extends BaseSamplerShader {
 
   _preRender(mesh) {
     super._preRender(mesh);
-    this.uniforms.tilescroll_time = canvas.app.ticker.lastTime;
+    this.uniforms.tilescroll_time = game.time.serverTime;//canvas.app.ticker.lastTime;
     this.uniforms.tilescroll_speed = (this.tile.document.flags["tile-scroll"]?.scrollSpeed ?? 1) / 10000;
     this.uniforms.tilescroll_direction = Math.toRadians(this.tile.document.flags["tile-scroll"]?.scrollDirection ?? 0);
     this.uniforms.tilescroll_scroll = this.tile.document.flags["tile-scroll"]?.enableScroll ?? false;
