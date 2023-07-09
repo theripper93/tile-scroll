@@ -4,6 +4,8 @@ Hooks.on("renderTileConfig", (app, html, data) => {
     const scrollSpeed = app.object.getFlag("tile-scroll", "scrollSpeed") ?? 1;
     const scrollDirection = app.object.getFlag("tile-scroll", "scrollDirection") ?? 0;
     const repeat = app.object.getFlag("tile-scroll", "repeat") ?? 1;
+    const repeatx = app.object.getFlag("tile-scroll", "repeatx") ?? repeat;
+    const repeaty = app.object.getFlag("tile-scroll", "repeaty") ?? repeat;
     const pivotx = app.object.getFlag("tile-scroll", "pivotx") ?? 0.5;
     const pivoty = app.object.getFlag("tile-scroll", "pivoty") ?? 0.5;
     const offsetx = app.object.getFlag("tile-scroll", "offsetx") ?? 0;
@@ -31,13 +33,20 @@ Hooks.on("renderTileConfig", (app, html, data) => {
 
     <div class="form-group">
         <label for="flags.tile-scroll.scrollSpeed">${game.i18n.localize("tile-scroll.flags.scrollSpeed")}</label>
+        <div class="form-fields">
         <input type="number" value="${scrollSpeed}" step="any" name="flags.tile-scroll.scrollSpeed">
-        <label style="margin-left:0.5rem" for="flags.tile-scroll.repeat">${game.i18n.localize("tile-scroll.flags.repeat")}</label>
-        <input type="number" value="${repeat}" step="any" name="flags.tile-scroll.repeat">
+        </div>
+
     </div>
 
-    <div class="form-group">
-
+    <div class="form-group slim">
+        <label for="flags.tile-scroll.repeat">${game.i18n.localize("tile-scroll.flags.repeat")}</label>
+        <div class="form-fields">
+        <label>X</label>
+        <input type="number" value="${repeatx}" step="any" name="flags.tile-scroll.repeatx">
+        <label>Y</label>
+        <input type="number" value="${repeaty}" step="any" name="flags.tile-scroll.repeaty">
+        </div>
     </div>
 
     <div class="form-group slim">

@@ -17,7 +17,7 @@ class TileScrollShader extends BaseSamplerShader {
     uniform float tilescroll_direction;
     uniform bool tilescroll_scroll;
     uniform bool tilescroll_rotate;
-    uniform float tilescroll_repeat;
+    uniform vec2 tilescroll_repeat;
     uniform vec2 tilescroll_pivot;
     uniform vec2 tilescroll_offset;
     varying vec2 vUvs;
@@ -50,7 +50,7 @@ class TileScrollShader extends BaseSamplerShader {
     tilescroll_direction: 0,
     tilescroll_scroll: false,
     tilescroll_rotate: false,
-    tilescroll_repeat: 1,
+    tilescroll_repeat: [1,1],
     tilescroll_pivot: [0.5, 0.5],
     tilescroll_offset: [0, 0],
   };
@@ -62,7 +62,8 @@ class TileScrollShader extends BaseSamplerShader {
     this.uniforms.tilescroll_direction = Math.toRadians(this.tile.document.flags["tile-scroll"]?.scrollDirection ?? 0);
     this.uniforms.tilescroll_scroll = this.tile.document.flags["tile-scroll"]?.enableScroll ?? false;
     this.uniforms.tilescroll_rotate = this.tile.document.flags["tile-scroll"]?.enableRotate ?? false;
-    this.uniforms.tilescroll_repeat = this.tile.document.flags["tile-scroll"]?.repeat || 1;
+    const repeat = this.tile.document.flags["tile-scroll"]?.repeat || 1;
+    this.uniforms.tilescroll_repeat = [this.tile.document.flags["tile-scroll"]?.repeatx ?? repeat, this.tile.document.flags["tile-scroll"]?.repeaty ?? repeat];
     this.uniforms.tilescroll_pivot = [this.tile.document.flags["tile-scroll"]?.pivotx ?? 0.5, this.tile.document.flags["tile-scroll"]?.pivoty ?? 0.5];
     this.uniforms.tilescroll_pivot[0] += 0.00000001;
     this.uniforms.tilescroll_pivot[1] += 0.00000001;
@@ -73,7 +74,11 @@ class TileScrollShader extends BaseSamplerShader {
 Hooks.on("drawTile", (tile, layer, context) => {
   if((tile.document.flags["tile-scroll"]?.enableScroll || tile.document.flags["tile-scroll"]?.enableRotate) && tile.document.occlusion.mode <= 1) {
     tile.mesh.setShaderClass(TileScrollShader);
-    tile.mesh.texture.baseTexture.wrapMode = tile.document.flags["tile-scroll"]?.repeat ? PIXI.WRAP_MODES.REPEAT : PIXI.WRAP_MODES.CLAMP;
+    const repeat = tile.document.flags["tile-scroll"]?.repeat || 1;
+    const repeatx = tile.document.flags["tile-scroll"]?.repeatx ?? repeat;
+    const repeaty = tile.document.flags["tile-scroll"]?.repeaty ?? repeat;
+    const useRepeat = repeatx && repeaty;
+    tile.mesh.texture.baseTexture.wrapMode = useRepeat ? PIXI.WRAP_MODES.REPEAT : PIXI.WRAP_MODES.CLAMP;
     tile.mesh.texture.baseTexture.update()
     tile.mesh.shader.tile = tile;
   }
@@ -83,7 +88,11 @@ Hooks.on("updateTile", (tile, updates) => {
   if(!tile.object) return;
   if((updates?.flags?.["tile-scroll"] !== undefined || updates?.occlusion) && tile.occlusion.mode <= 1) {
     tile.object.mesh.setShaderClass(tile.flags["tile-scroll"].enableScroll || tile.flags["tile-scroll"].enableRotate ? TileScrollShader : BaseSamplerShader);
-    tile.object.mesh.texture.baseTexture.wrapMode = tile.flags["tile-scroll"]?.repeat ? PIXI.WRAP_MODES.REPEAT : PIXI.WRAP_MODES.CLAMP;
+    const repeat = tile.flags["tile-scroll"]?.repeat || 1;
+    const repeatx = tile.flags["tile-scroll"]?.repeatx ?? repeat;
+    const repeaty = tile.flags["tile-scroll"]?.repeaty ?? repeat;
+    const useRepeat = repeatx && repeaty;
+    tile.object.mesh.texture.baseTexture.wrapMode = useRepeat ? PIXI.WRAP_MODES.REPEAT : PIXI.WRAP_MODES.CLAMP;
     tile.object.mesh.texture.baseTexture.update()
     tile.object.mesh.shader.tile = tile.object;
   }
