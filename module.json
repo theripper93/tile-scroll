@@ -1,47 +1,45 @@
 {
-    "title": "Tile Scroll",
-    "description": "Scroll, rotate, and repeat tiles over time.",
-    "id": "tile-scroll",
-    "version": "1.0",
-    "authors": [
-      {
-        "name": "theripper93",
-        "email": "tsplab@gmail.com",
-        "url": "https://www.patreon.com/theripper93"
-      }
-    ],
-    "languages": [
-      {
-        "lang": "en",
-        "name": "English",
-        "path": "languages/en.json"
-      }
-    ],
-    "scripts": [
-        "scripts/config.js",
-        "scripts/main.js"
-    ],
-    "esmodules": [
-    ],
-    "styles": [
-      "styles/module.css"
-    ],
-    "packs": [
-    ],
-    "url": "https://github.com/theripper93/tile-scroll",
-    "manifest": "https://github.com/theripper93/tile-scroll/releases/latest/download/module.json",
-    "download": "https://github.com/theripper93/tile-scroll/releases/latest/download/module.zip",
-    "relationships": {
-      "requires": [
-        {
-          "id": "lib-wrapper",
-          "type": "module",
-          "compatibility": {}
-        }
-      ]
-    },
-    "compatibility": {
-      "minimum": "11",
-      "verified": "11"
+  "title": "Tile Scroll",
+  "description": "Scroll, rotate, and repeat tiles over time.",
+  "id": "tile-scroll",
+  "version": "1.0",
+  "authors": [
+    {
+      "name": "theripper93",
+      "email": "tsplab@gmail.com",
+      "url": "https://www.patreon.com/theripper93"
     }
+  ],
+  "languages": [
+    {
+      "lang": "en",
+      "name": "English",
+      "path": "languages/en.json"
+    }
+  ],
+  "scripts": [
+    "scripts/config.js",
+    "scripts/main.js"
+  ],
+  "esmodules": [],
+  "styles": [
+    "styles/module.css"
+  ],
+  "packs": [],
+  "url": "https://github.com/theripper93/tile-scroll",
+  "manifest": "https://github.com/theripper93/tile-scroll/releases/latest/download/module.json",
+  "download": "https://github.com/theripper93/tile-scroll/releases/latest/download/module.zip",
+  "relationships": {
+    "requires": [
+      {
+        "id": "lib-wrapper",
+        "type": "module",
+        "compatibility": {}
+      }
+    ]
+  },
+  "compatibility": {
+    "minimum": "12",
+    "verified": "12"
   }
+}
