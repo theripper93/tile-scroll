@@ -32,6 +32,7 @@ class TileScrollShader extends PrimaryBaseSamplerShader {
       uniform vec2 tilescroll_repeat;
       uniform vec2 tilescroll_pivot;
       uniform vec2 tilescroll_offset;
+      uniform vec2 tilescroll_parallax;
 
       out vec2 vUvs;
       out vec2 vScreenCoord;
@@ -40,7 +41,9 @@ class TileScrollShader extends PrimaryBaseSamplerShader {
         vec2 vertexPosition;
         vec2 textureCoord;
         _main(vertexPosition, textureCoord);
-      vUvs = aTextureCoord * tilescroll_repeat + tilescroll_offset;
+        vUvs = aTextureCoord * tilescroll_repeat + tilescroll_offset;
+        vUvs += tilescroll_parallax;
+
       if(tilescroll_scroll) {
         vUvs += vec2(tilescroll_time * tilescroll_speed * cos(tilescroll_direction), tilescroll_time * tilescroll_speed * sin(tilescroll_direction));
       }
@@ -74,6 +77,7 @@ class TileScrollShader extends PrimaryBaseSamplerShader {
         tilescroll_repeat: [1, 1],
         tilescroll_pivot: [0.5, 0.5],
         tilescroll_offset: [0, 0],
+        tilescroll_parallax: [1, 1],
     };
 
     _preRender(mesh) {
@@ -86,16 +90,24 @@ class TileScrollShader extends PrimaryBaseSamplerShader {
         const repeat = this.tile.document.flags["tile-scroll"]?.repeat || 1;
         const repeatx = this.tile.document.flags["tile-scroll"]?.repeatx ?? repeat;
         const repeaty = this.tile.document.flags["tile-scroll"]?.repeaty ?? repeat;
+        const parallax = (this.tile.document.flags["tile-scroll"]?.parallax ?? 0) / 10;
         this.uniforms.tilescroll_repeat = [repeatx || 1, repeaty || 1];
         this.uniforms.tilescroll_pivot = [this.tile.document.flags["tile-scroll"]?.pivotx ?? 0.5, this.tile.document.flags["tile-scroll"]?.pivoty ?? 0.5];
         this.uniforms.tilescroll_pivot[0] += 0.00000001;
         this.uniforms.tilescroll_pivot[1] += 0.00000001;
         this.uniforms.tilescroll_offset = [this.tile.document.flags["tile-scroll"]?.offsetx ?? 0, this.tile.document.flags["tile-scroll"]?.offsety ?? 0];
+
+        const cameraCenter = canvas.stage.pivot;
+        //normalize to the -1 to 1 range
+        const {width, height} = canvas.scene.dimensions;
+        const cameraCenterX = (cameraCenter.x / width) * 2 - 1;
+        const cameraCenterY = (cameraCenter.y / height) * 2 - 1;
+        this.uniforms.tilescroll_parallax = [1 + parallax * cameraCenterX, 1 + parallax * cameraCenterY];
     }
 }
 
 Hooks.on("drawTile", (tile, layer, context) => {
-    if ((tile.document.flags["tile-scroll"]?.enableScroll || tile.document.flags["tile-scroll"]?.enableRotate)) {
+    if (tile.document.flags["tile-scroll"]?.enableScroll || tile.document.flags["tile-scroll"]?.enableRotate || tile.document.flags["tile-scroll"]?.parallax) {
         tile.mesh.setShaderClass(TileScrollShader);
         const repeat = tile.document.flags["tile-scroll"]?.repeat ?? 1;
         const repeatx = tile.document.flags["tile-scroll"]?.repeatx ?? repeat;
@@ -109,7 +121,7 @@ Hooks.on("drawTile", (tile, layer, context) => {
 
 Hooks.on("updateTile", (tile, updates) => {
     if (!tile.object) return;
-    if ((updates?.flags?.["tile-scroll"] !== undefined || updates?.occlusion)) {
+    if (updates?.flags?.["tile-scroll"] !== undefined || updates?.occlusion) {
         tile.object.mesh.setShaderClass(tile.flags["tile-scroll"].enableScroll || tile.flags["tile-scroll"].enableRotate ? TileScrollShader : PrimaryBaseSamplerShader);
         const repeat = tile.flags["tile-scroll"]?.repeat ?? 1;
         const repeatx = tile.flags["tile-scroll"]?.repeatx ?? repeat;
@@ -118,5 +130,6 @@ Hooks.on("updateTile", (tile, updates) => {
         tile.object.mesh.texture.baseTexture.wrapMode = useRepeat ? PIXI.WRAP_MODES.REPEAT : PIXI.WRAP_MODES.CLAMP;
         tile.object.mesh.texture.baseTexture.update();
         tile.object.mesh.shader.tile = tile.object;
+        tile.object.draw();
     }
 });

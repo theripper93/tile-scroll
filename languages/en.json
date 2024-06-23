@@ -9,7 +9,8 @@
             "enableRotate": "Enable Rotation",
             "repeat": "Texture Repeat",
             "pivot": "Rotation Pivot",
-            "offset": "Offset"
+            "offset": "Offset",
+            "parallax": "Parallax Strength"
         }
     }
 }

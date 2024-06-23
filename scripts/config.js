@@ -10,6 +10,7 @@ Hooks.on("renderTileConfig", (app, html, data) => {
     const pivoty = app.object.getFlag("tile-scroll", "pivoty") ?? 0.5;
     const offsetx = app.object.getFlag("tile-scroll", "offsetx") ?? 0;
     const offsety = app.object.getFlag("tile-scroll", "offsety") ?? 0;
+    const parallax = app.object.getFlag("tile-scroll", "parallax") ?? 0;
 
     const injectHtml = `
     <h3 class="form-header"><i class="fas fa-angle-double-right"></i> ${game.i18n.localize("tile-scroll.flags.header")}</h3>
@@ -67,6 +68,14 @@ Hooks.on("renderTileConfig", (app, html, data) => {
                 <label>Y</label>
                 <input type="number" value="${offsety}" step="any" name="flags.tile-scroll.offsety">
             </div>
+    </div>
+
+        <div class="form-group">
+        <label for="flags.tile-scroll.parallax">${game.i18n.localize("tile-scroll.flags.parallax")}</label>
+        <div class="form-fields">
+        <input type="number" value="${parallax}" step="any" name="flags.tile-scroll.parallax">
+        </div>
+
     </div>
     <hr>
     `;
