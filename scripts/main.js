@@ -90,7 +90,7 @@ class TileScrollShader extends PrimaryBaseSamplerShader {
         const repeat = this.tile.document.flags["tile-scroll"]?.repeat || 1;
         const repeatx = this.tile.document.flags["tile-scroll"]?.repeatx ?? repeat;
         const repeaty = this.tile.document.flags["tile-scroll"]?.repeaty ?? repeat;
-        const parallax = (this.tile.document.flags["tile-scroll"]?.parallax ?? 0) / 10;
+        const parallax = (this.tile.document.flags["tile-scroll"]?.parallax ?? 0) / -10;
         this.uniforms.tilescroll_repeat = [repeatx || 1, repeaty || 1];
         this.uniforms.tilescroll_pivot = [this.tile.document.flags["tile-scroll"]?.pivotx ?? 0.5, this.tile.document.flags["tile-scroll"]?.pivoty ?? 0.5];
         this.uniforms.tilescroll_pivot[0] += 0.00000001;
