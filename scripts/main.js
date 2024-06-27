@@ -102,7 +102,7 @@ class TileScrollShader extends PrimaryBaseSamplerShader {
         const {width, height} = canvas.scene.dimensions;
         const cameraCenterX = (cameraCenter.x / width) * 2 - 1;
         const cameraCenterY = (cameraCenter.y / height) * 2 - 1;
-        this.uniforms.tilescroll_parallax = [1 + parallax * cameraCenterX, 1 + parallax * cameraCenterY];
+        this.uniforms.tilescroll_parallax = [parallax * cameraCenterX, parallax * cameraCenterY];
     }
 }
 
