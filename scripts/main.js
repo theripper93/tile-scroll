@@ -1,4 +1,4 @@
-class TileScrollShader extends PrimaryBaseSamplerShader {
+class TileScrollShader extends foundry.canvas.rendering.shaders.PrimaryBaseSamplerShader {
     get enabled() {
         return true;
     }
@@ -122,7 +122,7 @@ Hooks.on("drawTile", (tile, layer, context) => {
 Hooks.on("updateTile", (tile, updates) => {
     if (!tile.object) return;
     if (updates?.flags?.["tile-scroll"] !== undefined || updates?.occlusion) {
-        tile.object.mesh.setShaderClass(tile.flags["tile-scroll"].enableScroll || tile.flags["tile-scroll"].enableRotate ? TileScrollShader : PrimaryBaseSamplerShader);
+        tile.object.mesh.setShaderClass(tile.flags["tile-scroll"].enableScroll || tile.flags["tile-scroll"].enableRotate ? TileScrollShader : foundry.canvas.rendering.shaders.PrimaryBaseSamplerShader);
         const repeat = tile.flags["tile-scroll"]?.repeat ?? 1;
         const repeatx = tile.flags["tile-scroll"]?.repeatx ?? repeat;
         const repeaty = tile.flags["tile-scroll"]?.repeaty ?? repeat;
