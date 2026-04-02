@@ -6,7 +6,7 @@ class TileScrollShader extends foundry.canvas.rendering.shaders.PrimaryBaseSampl
 
     static classPluginName = null;
 
-    static get vertexShader() {
+    static _createVertexShader() {
         return `
       #version 300 es
 
